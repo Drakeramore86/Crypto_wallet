@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+{% load static tailwind_tags %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
+
+    {% tailwind_css %}
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+    <header>
+
+    </header>
+
+    <section>
+        {% block main_content %}{% endblock %}
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Crypto Wallet App. All rights reserved.</p>
+    </footer>
+    <!-- Your main content goes here -->
+
+</body>
+
+</html>
