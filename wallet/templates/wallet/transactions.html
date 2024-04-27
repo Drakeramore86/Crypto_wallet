@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block main_content %}
+<h1>Transactions</h1>
+    {% for trans_num, transaction_data in context.items %}
+    <div class="transaction-frame">
+        <p><strong>Transaction Number:</strong> {{ trans_num }}</p>
+        <p><strong>To:</strong> {{ transaction_data.To }}</p>
+        <p><strong>From:</strong> {{ transaction_data.From }}</p>
+        <p><strong>Current Balance:</strong> {{ transaction_data.Current_Balance }}</p>
+        <p><strong>Time:</strong> {{ transaction_data.Time }}</p>
+    </div>
+    {% endfor %}
+{% endblock %}
