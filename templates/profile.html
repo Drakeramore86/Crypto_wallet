@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>Welcome to your profile, {{ profile.user.username }}!</h1>
+    <p>Name: {{ profile.name }}</p>
+    <p>Last Name: {{ profile.last_name }}</p>
+    <p>Short Intro: {{ profile.short_intro }}</p>
+    {% if profile.account_photo %}
+        <img src="{{ profile.account_photo.url }}" alt="Profile Photo">
+    {% else %}
+        <p>No profile photo uploaded.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,7 +1,7 @@
 from django.urls import path
-from . import views
+from .views import main_page_view, search_address
 
 urlpatterns = [
-    path('', views.main_page_view, name='home'),
-    path('transactions/', views.transactions_page_view, name="transactions"),
+    path('', main_page_view, name='home'),
+    path('search/', search_address, name='search_address'),
 ]

@@ -1,17 +1,19 @@
-from django.dispatch.dispatcher import receiver
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.urls import conf
-from django.db.models import Q
+from .forms import CustomUserCreationForm
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .models import Profile
-from .forms import CustomUserCreationForm, ProfileForm
-# from .utils import searchProfiles, paginateProfiles
-
-
 from .forms import LoginForm
+
+
+
+@login_required
+def profile(request):
+    profile = get_object_or_404(Profile, user=request.user)
+    return render(request, 'profile.html', {'profile': profile})
+
 
 def loginUser(request):
     form = LoginForm(request.POST or None)
@@ -40,6 +42,9 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # Create a Profile object for the newly registered user
+            Profile.objects.create(user=user)
+
             login(request, user)
             print('Registration successful. Welcome to our site!')
             messages.success(request, 'Registration successful. Welcome to our site!')

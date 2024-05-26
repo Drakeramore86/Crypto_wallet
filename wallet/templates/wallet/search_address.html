@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block main_content %}
+<div class="content">
+    <h1>Search Ethereum Wallet Transactions</h1>
+    <div class="search-container">
+        <form method="post" class="search-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+
+    {% if transactions %}
+        <h2>Transactions for {{ address }}</h2>
+        <div class="transactions-container">
+        {% for trans_num, transaction_data in transactions.items %}
+        <div class="transaction-frame">
+            <table class="transaction-table">
+                <tr>
+                    <td><strong>Transaction Number:</strong></td>
+                    <td>{{ trans_num }}</td>
+                </tr>
+                <tr>
+                    <td><strong>To:</strong></td>
+                    <td>{{ transaction_data.To }}</td>
+                </tr>
+                <tr>
+                    <td><strong>From:</strong></td>
+                    <td>{{ transaction_data.From }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Current Balance:</strong></td>
+                    <td>{{ transaction_data.Current_Balance }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Time:</strong></td>
+                    <td>{{ transaction_data.Time }}</td>
+                </tr>
+            </table>
+        </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

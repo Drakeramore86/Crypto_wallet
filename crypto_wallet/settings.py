@@ -94,8 +94,12 @@ WSGI_APPLICATION = 'crypto_wallet.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'diploma-project-db',
+        'USER': 'postgres',
+        'PASSWORD': 'Vbifkukish1',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
