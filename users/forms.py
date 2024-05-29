@@ -29,3 +29,14 @@ class FavoriteAddressForm(forms.ModelForm):
     class Meta:
         model = FavoriteAddress
         fields = ['address']
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['name', 'last_name', 'short_intro', 'account_photo']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            field.widget.attrs.update({"class": "input"})

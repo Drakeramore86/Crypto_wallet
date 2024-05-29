@@ -4,7 +4,6 @@
 <div class="max-w-3xl mx-auto p-8 bg-white shadow-md rounded-lg mt-10">
     <div class="text-center mb-8">
         <h1 class="text-4xl font-bold">Welcome to your profile, {{ profile.user.username }}!</h1>
-        <p class="text-gray-600">Manage your information below</p>
     </div>
     <div class="flex flex-col items-center">
         {% if profile.account_photo %}
@@ -21,10 +20,16 @@
         </div>
         <div class="mt-8 w-full">
             <h2 class="text-2xl font-bold mb-4">Favorite Addresses</h2>
-            {% if profile.favorite_addresses.all %}
+            {% if favorite_addresses %}
                 <ul class="list-disc list-inside">
-                    {% for address in profile.favorite_addresses.all %}
-                        <li class="bg-gray-100 p-2 rounded mb-2">{{ address.address }}</li>
+                    {% for address in favorite_addresses %}
+                        <li class="bg-gray-100 p-2 rounded mb-2 flex justify-between items-center">
+                            <span>{{ address.address }}</span>
+                            <form action="{% url 'delete_favorite_address' address.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
+                            </form>
+                        </li>
                     {% endfor %}
                 </ul>
             {% else %}

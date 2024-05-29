@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from requests import get
 from datetime import datetime
 from .forms import AddressForm
 from users.models import Profile, FavoriteAddress
 from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 
 ETHER_VALUE = 10 ** 18
 
@@ -72,6 +75,7 @@ def search_address(request):
                 else:
                     messages.error(request, 'You can only save up to 10 favorite addresses.')
     return render(request, 'wallet/search_address.html', context)
+
 
 def main_page_view(request):
     context = {}

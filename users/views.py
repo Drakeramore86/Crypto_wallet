@@ -3,10 +3,13 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+from .models import Profile, FavoriteAddress
 from .forms import CustomUserCreationForm, ProfileForm
 from django.db import transaction, IntegrityError
 from django import forms
+from .forms import ProfileUpdateForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 @login_required
@@ -17,11 +20,9 @@ def profile(request):
     return render(request, 'profile.html', {'profile': profile, 'favorite_addresses': favorite_addresses})
 
 
-
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
-
 
 def loginUser(request):
     form = LoginForm(request.POST or None)
@@ -100,3 +101,26 @@ def logout_view(request):
     print('You logged out successfully')
     messages.success(request, 'You logged out successfully')
     return redirect('home')
+
+
+@login_required
+def update_profile(request):
+    profile = get_object_or_404(Profile, user=request.user)
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('profile')
+    else:
+        form = ProfileUpdateForm(instance=profile)
+    return render(request, 'registration/settings.html', {'form': form})
+
+
+@login_required
+def delete_favorite_address(request, address_id):
+    profile = get_object_or_404(Profile, user=request.user)
+    address = get_object_or_404(FavoriteAddress, id=address_id, profile=profile)
+    address.delete()
+    messages.success(request, 'Favorite address was successfully deleted.')
+    return HttpResponseRedirect(reverse('profile'))
