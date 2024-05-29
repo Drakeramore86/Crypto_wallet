@@ -6,26 +6,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
-
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.2.4/dist/cdn.min.js" defer></script>
     {% tailwind_css %}
+    <style>
+        .min-h-screen-with-footer {
+            min-height: calc(100vh - 64px); /* Adjust based on your navbar height */
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-gray-100 flex flex-col min-h-screen">
     {% include 'navbar.html' %}
-    <header>
 
-    </header>
+    <div class="flex-grow">
+        <section class="min-h-screen-with-footer">
+            {% block main_content %}{% endblock %}
+        </section>
+    </div>
 
-    <section>
-        {% block main_content %}{% endblock %}
-    </section>
-
-    <footer>
+    <footer class="bg-gray-800 text-white text-center py-4 mt-auto">
         <p>&copy; 2024 Crypto Wallet App. All rights reserved.</p>
     </footer>
-    <!-- Your main content goes here -->
-
 </body>
 
 </html>

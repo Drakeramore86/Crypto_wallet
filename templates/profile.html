@@ -1,19 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-</head>
-<body>
-    <h1>Welcome to your profile, {{ profile.user.username }}!</h1>
-    <p>Name: {{ profile.name }}</p>
-    <p>Last Name: {{ profile.last_name }}</p>
-    <p>Short Intro: {{ profile.short_intro }}</p>
-    {% if profile.account_photo %}
-        <img src="{{ profile.account_photo.url }}" alt="Profile Photo">
-    {% else %}
-        <p>No profile photo uploaded.</p>
-    {% endif %}
-</body>
-</html>
+{% extends 'main.html' %}
+
+{% block main_content %}
+<div class="max-w-3xl mx-auto p-8 bg-white shadow-md rounded-lg mt-10">
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold">Welcome to your profile, {{ profile.user.username }}!</h1>
+        <p class="text-gray-600">Manage your information below</p>
+    </div>
+    <div class="flex flex-col items-center">
+        {% if profile.account_photo %}
+            <img class="w-32 h-32 rounded-full border-4 border-gray-300" src="{{ profile.account_photo.url }}" alt="Profile Photo">
+        {% else %}
+            <div class="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m0 4v5m0 4v1m8-5a8 8 0 11-16 0 8 8 0 0116 0z"></path>
+                </svg>
+            </div>
+        {% endif %}
+        <div class="mt-4 text-center space-y-2">
+            <p class="text-xl font-semibold">Name: {{ profile.name|default:"Not provided" }}</p>
+            <p class="text-xl font-semibold">Last Name: {{ profile.last_name|default:"Not provided" }}</p>
+            <p class="text-lg text-gray-500 mt-2">Short Intro: {{ profile.short_intro|default:"Not provided" }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

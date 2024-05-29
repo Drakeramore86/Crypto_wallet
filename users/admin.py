@@ -1,5 +1,12 @@
 from django.contrib import admin
+from users.models import Profile
 
-from .models import Profile
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'name', 'last_name', 'email', 'created')
+    search_fields = ('user__username', 'name', 'last_name', 'email')
 
-admin.site.register(Profile)
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.select_related('user')
+        return queryset
