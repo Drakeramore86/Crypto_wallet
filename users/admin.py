@@ -1,5 +1,5 @@
 from django.contrib import admin
-from users.models import Profile
+from .models import Profile, FavoriteAddress
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -10,3 +10,8 @@ class ProfileAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         queryset = queryset.select_related('user')
         return queryset
+
+@admin.register(FavoriteAddress)
+class FavoriteAddressAdmin(admin.ModelAdmin):
+    list_display = ('profile', 'address', 'created')
+    search_fields = ('profile__user__username', 'address')

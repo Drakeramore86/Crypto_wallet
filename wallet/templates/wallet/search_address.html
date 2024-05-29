@@ -2,48 +2,60 @@
 {% load static %}
 
 {% block main_content %}
-<div class="content">
-    <h1>Search Ethereum Wallet Transactions</h1>
-    <div class="search-container">
-        <form method="post" class="search-form">
+<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Search Ethereum Wallet Transactions</h1>
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <form method="post" class="space-y-4">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="search-button">Search</button>
+            <div class="flex items-center">
+                <div class="flex-grow">
+                    {{ form.address.label_tag }}
+                    {{ form.address }}
+                </div>
+                {% if user.is_authenticated %}
+                <div class="flex items-center ml-4">
+                    <input type="checkbox" name="save_address" id="save_address" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <label for="save_address" class="ml-2 block text-sm text-gray-900">Save</label>
+                </div>
+                {% endif %}
+                <div class="ml-4">
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Search</button>
+                </div>
+            </div>
         </form>
     </div>
 
     {% if transactions %}
-        <h2>Transactions for {{ address }}</h2>
+        <h2 class="text-2xl font-bold mt-8 mb-4">Transactions for {{ address }}</h2>
         <div class="transactions-container">
-        {% for trans_num, transaction_data in transactions.items %}
-        <div class="transaction-frame">
-            <table class="transaction-table">
-                <tr>
-                    <td><strong>Transaction Number:</strong></td>
-                    <td>{{ trans_num }}</td>
-                </tr>
-                <tr>
-                    <td><strong>To:</strong></td>
-                    <td>{{ transaction_data.To }}</td>
-                </tr>
-                <tr>
-                    <td><strong>From:</strong></td>
-                    <td>{{ transaction_data.From }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Current Balance:</strong></td>
-                    <td>{{ transaction_data.Current_Balance }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Time:</strong></td>
-                    <td>{{ transaction_data.Time }}</td>
-                </tr>
-            </table>
-        </div>
-        {% endfor %}
+            {% for trans_num, transaction_data in transactions.items %}
+            <div class="transaction-frame bg-gray-100 p-4 rounded-lg mb-4">
+                <table class="transaction-table">
+                    <tr>
+                        <td class="font-semibold">Transaction Number:</td>
+                        <td>{{ trans_num }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">To:</td>
+                        <td>{{ transaction_data.To }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">From:</td>
+                        <td>{{ transaction_data.From }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Current Balance:</td>
+                        <td>{{ transaction_data.Current_Balance }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Time:</td>
+                        <td>{{ transaction_data.Time }}</td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
         </div>
     {% endif %}
 </div>
-
-
 {% endblock %}
+

@@ -14,3 +14,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.user.username)
+
+class FavoriteAddress(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='favorite_addresses')
+    address = models.CharField(max_length=42)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.address

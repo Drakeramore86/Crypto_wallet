@@ -1,8 +1,7 @@
-# forms.py
 from django import forms
+from .models import Profile, FavoriteAddress
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -26,3 +25,7 @@ class ProfileForm(forms.ModelForm):
         for name, field in self.fields.items():
             field.widget.attrs.update({"class": "input"})
 
+class FavoriteAddressForm(forms.ModelForm):
+    class Meta:
+        model = FavoriteAddress
+        fields = ['address']

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from requests import get
 from datetime import datetime
 from .forms import AddressForm
+from users.models import Profile, FavoriteAddress
+from django.contrib import messages
 
 ETHER_VALUE = 10 ** 18
 
@@ -48,10 +50,6 @@ def get_transactions(address):
         trans_num += 1
     return context
 
-def main_page_view(request):
-    context = {}
-    return render(request, 'wallet/homepage.html', context)
-
 def search_address(request):
     form = AddressForm()
     context = {'form': form}
@@ -62,4 +60,19 @@ def search_address(request):
             transactions = get_transactions(address)
             context['address'] = address
             context['transactions'] = transactions
+            if request.user.is_authenticated and 'save_address' in request.POST:
+                profile = Profile.objects.get(user=request.user)
+                # Check if the user already has 10 addresses
+                if profile.favorite_addresses.count() < 10:
+                    favorite_address, created = FavoriteAddress.objects.get_or_create(profile=profile, address=address)
+                    if created:
+                        messages.success(request, 'Address saved to your profile.')
+                    else:
+                        messages.info(request, 'Address already in your favorites.')
+                else:
+                    messages.error(request, 'You can only save up to 10 favorite addresses.')
     return render(request, 'wallet/search_address.html', context)
+
+def main_page_view(request):
+    context = {}
+    return render(request, 'wallet/homepage.html', context)

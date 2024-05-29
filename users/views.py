@@ -12,8 +12,10 @@ from django import forms
 @login_required
 def profile(request):
     profile = get_object_or_404(Profile, user=request.user)
+    favorite_addresses = profile.favorite_addresses.all()
     print(profile.name)  # Print profile data to ensure it's fetched correctly
-    return render(request, 'profile.html', {'profile': profile})
+    return render(request, 'profile.html', {'profile': profile, 'favorite_addresses': favorite_addresses})
+
 
 
 class LoginForm(forms.Form):

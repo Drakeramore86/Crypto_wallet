@@ -19,10 +19,18 @@
             <p class="text-xl font-semibold">Last Name: {{ profile.last_name }}</p>
             <p class="text-lg text-gray-500 mt-2">Short Intro: {{ profile.short_intro }}</p>
         </div>
+        <div class="mt-8 w-full">
+            <h2 class="text-2xl font-bold mb-4">Favorite Addresses</h2>
+            {% if profile.favorite_addresses.all %}
+                <ul class="list-disc list-inside">
+                    {% for address in profile.favorite_addresses.all %}
+                        <li class="bg-gray-100 p-2 rounded mb-2">{{ address.address }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-500">No favorite addresses yet.</p>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}
-
-
-
-
