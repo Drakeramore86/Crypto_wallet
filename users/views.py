@@ -46,7 +46,6 @@ def register(request):
     if request.method == 'POST':
         user_form = CustomUserCreationForm(request.POST)
 
-        # Copy the POST data and remove fields that don't belong to ProfileForm
         profile_data = request.POST.copy()
         for key in ['username', 'email', 'password1', 'password2', 'csrfmiddlewaretoken']:
             profile_data.pop(key, None)
@@ -64,20 +63,19 @@ def register(request):
                     user = user_form.save()
                     print("User created:", user)  # Debug print
 
-                    # Ensure no duplicate profiles are created
-                    if Profile.objects.filter(user=user).exists():
-                        messages.error(request, 'A profile for this user already exists. Please try again.')
-                    else:
-                        profile = profile_form.save(commit=False)
-                        profile.user = user
-                        profile.save()
-                        print("Profile created:", profile)  # Debug print
-                        print("Profile photo URL:", profile.account_photo.url)  # Debug print
+                    # Check if a profile already exists
+                    profile, created = Profile.objects.get_or_create(user=user)
+                    profile.name = profile_form.cleaned_data.get('name')
+                    profile.last_name = profile_form.cleaned_data.get('last_name')
+                    profile.short_intro = profile_form.cleaned_data.get('short_intro')
+                    if 'account_photo' in request.FILES:
+                        profile.account_photo = request.FILES['account_photo']
+                    profile.save()
 
-                        login(request, user)
-                        print("User logged in:", user)  # Debug print
-                        messages.success(request, 'Registration successful. Welcome to our site!')
-                        return redirect('home')
+                    login(request, user)
+                    print("User logged in:", user)  # Debug print
+                    messages.success(request, 'Registration successful. Welcome to our site!')
+                    return redirect('home')
             except IntegrityError as e:
                 print("IntegrityError:", e)
                 messages.error(request, 'There was an error creating your profile. Please try again.')

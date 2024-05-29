@@ -11,19 +11,18 @@
             <img class="w-32 h-32 rounded-full border-4 border-gray-300" src="{{ profile.account_photo.url }}" alt="Profile Photo">
         {% else %}
             <div class="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
-                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m0 4v5m0 4v1m8-5a8 8 0 11-16 0 8 8 0 0116 0z"></path>
-                </svg>
+                No Photo
             </div>
         {% endif %}
-        <div class="mt-4 text-center space-y-2">
-            <p class="text-xl font-semibold">Name: {{ profile.name|default:"Not provided" }}</p>
-            <p class="text-xl font-semibold">Last Name: {{ profile.last_name|default:"Not provided" }}</p>
-            <p class="text-lg text-gray-500 mt-2">Short Intro: {{ profile.short_intro|default:"Not provided" }}</p>
+        <div class="mt-4 text-center">
+            <p class="text-xl font-semibold">Name: {{ profile.name }}</p>
+            <p class="text-xl font-semibold">Last Name: {{ profile.last_name }}</p>
+            <p class="text-lg text-gray-500 mt-2">Short Intro: {{ profile.short_intro }}</p>
         </div>
     </div>
 </div>
 {% endblock %}
+
 
 
 
